@@ -1,0 +1,266 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.7/css/unicons.css">
+    <!-- <link rel="stylesheet" href="https://daneden.github.io/animate.css/"> -->
+  </head>
+  
+  <style>
+    body {
+      background-color: #271c19;
+    }
+    .uil {
+      size: 150px;
+    }
+
+  </style>
+
+  <body> 
+    <div class="row-head">
+    <div class="col-sm-12">
+    <h1 align="center" style="margin-top: 30px; color: #fff; font-family:courier,arial,helvetica;">COVID-19 CASES IN INDIA</h1>
+    </div>
+   </div> 
+   
+   <div class="row" align="center" style="margin-top: 100px;">
+      <div class="col-sm-3">
+        <div class="card bg-warning text-white" align="center" style="width: 18rem;">
+            <div class="card-body">
+              <i class="uil uil-surprise"></i>
+            <h5 class="card-title">Confirmed </h5>
+            <p class="card-text"><%= confirmed %></p>
+        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="card bg-success text-white" align="center" style="width: 18rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body">
+            <i class="uil uil-grin"></i>
+            <h5 class="card-title">Recovered</h5>
+            <p class="card-text"> <%= recovered %></p>
+        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="card bg-danger text-white" align="center" style="width: 18rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body">
+            <i class="uil uil-emoji"></i>
+            <h5 class="card-title">Deaths</h5>
+            <p class="card-text"><%= deaths %></p>
+        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="card bg-info text-white" align="center" style="width: 18rem;">
+          <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body">
+            <i class="uil uil-ninja"></i>
+            <h5 class="card-title">Active</h5>
+            <p class="card-text"><%= active %></p>
+        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="container">
+<div class="row" style="margin-top:90px">
+
+<div class="col-sm-4">
+<div class="graph-card" style="background-color: #660000;">
+<div class="graph-card-body">
+<canvas id="myChart1" width="400" height="400"></canvas>
+</div>
+</div>
+<script>
+
+fetch("https://pomber.github.io/covid19/timeseries.json")
+            .then(response => response.json())
+            .then(data => {
+              data["India"].forEach(({ date, confirmed, recovered, deaths }) =>
+              //console.log
+                          (`${date} 
+                           confirmed: ${confirmed}
+                           recovered: ${recovered}
+                           deaths: ${deaths}
+                           active cases: ${confirmed - recovered - deaths}`)
+                          )
+
+              var parsedCoronaData = data["India"];
+
+              var label = parsedCoronaData.map(function(e) { 
+                return e.date;
+              });
+              var datas = parsedCoronaData.map(function(e) { 
+                return e.confirmed;
+              });
+
+              var ctx = document.getElementById('myChart1').getContext('2d');
+              var myChart = new Chart(ctx, {
+               type: 'bar',
+               data: {
+                labels: label,
+                 datasets: [{
+                   label: 'Confirmed cases over time',
+                   data: datas,
+                   backgroundColor: 'rgba(191, 191, 191, 1)',
+                  }]
+               }
+             });    
+            });
+</script>
+</div>
+
+<div class="col-sm-4">
+<div class="graph-card" style="background-color: #660000;">
+<div class="graph-card-body">
+<canvas id="myChart2" width="400" height="400"></canvas>
+</div>
+</div>
+<script>
+
+  fetch("https://pomber.github.io/covid19/timeseries.json")
+              .then(response => response.json())
+              .then(data => {
+                data["India"].forEach(({ date, confirmed, recovered, deaths }) =>
+                //console.log
+                            (`${date} 
+                             confirmed: ${confirmed}
+                             recovered: ${recovered}
+                             deaths: ${deaths}
+                             active cases: ${confirmed - recovered - deaths}`)
+                            )
+  
+                var parsedCoronaData = data["India"];
+  
+                var label = parsedCoronaData.map(function(e) { 
+                  return e.date;
+                });
+                var datas = parsedCoronaData.map(function(e) { 
+                  return e.recovered;
+                });
+  
+                var ctx = document.getElementById('myChart2').getContext('2d');
+                var myChart = new Chart(ctx, {
+                 type: 'bar',
+                 data: {
+                  labels: label,
+                   datasets: [{
+                     label: 'Recovered cases over time',
+                     data: datas,
+                     backgroundColor: 'rgba(191, 191, 191, 1)',
+                    }]
+                 }
+               });    
+              });
+  </script>
+</div>
+
+<div class="col-sm-4">
+<div class="graph-card3" style="background-color: #660000;">
+<div class="graph-card3-body">
+<canvas id="myChart3" width="400" height="400"></canvas>
+</div>
+</div>
+<script>
+  
+    fetch("https://pomber.github.io/covid19/timeseries.json")
+                .then(response => response.json())
+                .then(data => {
+                  data["India"].forEach(({ date, confirmed, recovered, deaths }) =>
+                  //console.log
+                              (`${date} 
+                               confirmed: ${confirmed}
+                               recovered: ${recovered}
+                               deaths: ${deaths}
+                               active cases: ${confirmed - recovered - deaths}`)
+                              )
+    
+                  var parsedCoronaData = data["India"];
+    
+                  var label = parsedCoronaData.map(function(e) { 
+                    return e.date;
+                  });
+                  var datas = parsedCoronaData.map(function(e) { 
+                    return e.deaths;
+                  });
+    
+                  var ctx = document.getElementById('myChart3').getContext('2d');
+                  var myChart = new Chart(ctx, {
+                   type: 'bar',
+                   data: {
+                    labels: label,
+                     datasets: [{
+                       label: 'Death cases over time',
+                       data: datas,
+                       backgroundColor: 'rgba(191, 191, 191, 1)',
+                      }]
+                   }
+                 });    
+                });
+    </script>
+  </div>
+</div>
+
+  <!-- <div class="col-xs-6">
+    <canvas id="myChart4" width="400" height="400"></canvas>
+    <script>
+    
+      fetch("https://pomber.github.io/covid19/timeseries.json")
+                  .then(response => response.json())
+                  .then(data => {
+                    data["India"].forEach(({ date, confirmed, recovered, deaths }) =>
+                    //console.log
+                                (`${date} 
+                                 confirmed: ${confirmed}
+                                 recovered: ${recovered}
+                                 deaths: ${deaths}
+                                 active cases: ${confirmed - recovered - deaths}`)
+                                )
+      
+                    var parsedCoronaData = data["India"];
+                    var active= (JSON.stringify(parsedCoronaData[len-1].confirmed))-(JSON.stringify(parsedCoronaData[len-1].deaths))-(JSON.stringify(parsedCoronaData[len-1].deaths));
+      
+                    var label = parsedCoronaData.map(function(e) { 
+                      return e.date;
+                    });
+      
+                    var ctx = document.getElementById('myChart4').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                     type: 'line',
+                     data: {
+                      labels: label,
+                       datasets: [{
+                         label: 'Active COVID cases in India ',
+                         data: active,
+                         backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        }]
+                     }
+                   });    
+                  });
+     </script>
+  </div> -->
+
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+  </body>
+ </html>
